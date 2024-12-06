@@ -1,0 +1,99 @@
+$grid-breakpoints: (
+    xs: 500px,
+    sm: 750px,
+    md: 1000px,
+    lg: 1250px,
+    xl: 1500px,
+    xxl: 1750px
+);
+
+$bg-color: #caf0f8;
+$gallery-color: #48cae4;
+$border-color: grey;
+$logo-color: #008cff;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+
+@font-face {
+    font-family: 'Jost';
+    src: url('../fonts/Jost-VariableFont_wght.ttf') format('truetype');
+}
+
+
+@mixin basic {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+@mixin centralize-page {
+    width: 1000px;
+}
+
+@mixin icon {
+    width: 30px;
+    height: 30px;
+    mix-blend-mode: multiply;
+}
+
+nav {
+    .navbar-brand {
+        color: $logo-color;
+    }
+}
+
+body {
+    background-color: $bg-color;
+}
+
+.text-center {
+    width: 1000px;
+}
+
+
+.card-img-top {
+    width: 100%; /* Заставляет изображение занимать всю ширину карточки */
+    height: 300px; /* Установите желаемую высоту изображения */
+    object-fit: cover; /* Обрезает изображение, сохраняя пропорции */
+}
+
+
+footer {
+    @include basic;
+    border-top: 1px solid black;
+    .centralizer {
+        @include centralize-page;
+        display: flex;
+        align-items: center;
+        height: 70px;
+    }
+
+    .name {
+        font-family: 'Jost';
+    }
+
+    .icons {
+        margin-left: auto;
+        display: flex;
+        justify-content: space-between;
+        width: 110px;
+        a, .icon {
+            @include icon;
+        }
+    }
+}
+
+.toast {
+    background-color: #f8f9fa; // Цвет фона
+    border: 1px solid #007bff; // Цвет границы
+}
+
+.toast-header {
+    background-color: #007bff; // Цвет заголовка
+    color: white; // Цвет текста заголовка
+}
+
+.loadbtn {
+    padding-right: 5px;
+}
