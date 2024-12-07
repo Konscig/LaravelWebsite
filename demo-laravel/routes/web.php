@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::get('/my-page', function () {
     return view('index'); // Указываем имя файла, без `.blade.php`
 });
+
+Route::resource('paints', \App\Http\Controllers\PaintController::class);

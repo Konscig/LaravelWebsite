@@ -6,13 +6,21 @@ mix.js('resources/js/app.js', 'public/js');
 // Сборка SCSS
 mix.sass('resources/sass/app.scss', 'public/css');
 
+// Копирование изображений
 mix.copyDirectory('resources/images', 'public/images');
 
+// Отключение обработки путей в CSS
 mix.options({
-    processCssUrls: false // Отключить обработку путей в CSS
+    processCssUrls: false
 });
 
-// Включение версионирования (опционально для продакшена)
+module.exports = {
+    stats: {
+        warnings: false
+    }
+}
+
+// Включение версионирования для продакшн-сборки
 if (mix.inProduction()) {
     mix.version();
 }

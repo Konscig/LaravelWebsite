@@ -10,15 +10,15 @@ $grid-breakpoints: (
 $bg-color: #caf0f8;
 $gallery-color: #48cae4;
 $border-color: grey;
-$logo-color: #008cff;
+$logo-color: blue;
 
-@import "bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/bootstrap.scss";
 
 
 @font-face {
     font-family: 'Jost';
     src: url('../fonts/Jost-VariableFont_wght.ttf') format('truetype');
-  }
+}
 
 
 @mixin basic {
@@ -56,7 +56,7 @@ body {
     width: 100%; /* Заставляет изображение занимать всю ширину карточки */
     height: 300px; /* Установите желаемую высоту изображения */
     object-fit: cover; /* Обрезает изображение, сохраняя пропорции */
-  }
+}
 
 
 footer {

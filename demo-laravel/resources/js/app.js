@@ -1,6 +1,6 @@
 require('./bootstrap');
 import { Modal, Popover, Toast } from 'bootstrap'; // Подключение Bootstrap JS
-import '../sass/styles.scss'; // Корректный импорт SCSS
+import '../sass/app.scss'; // Корректный импорт SCSS
 
 
 const cards = document.querySelectorAll('.card');
