@@ -9568,8 +9568,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 /* harmony import */ var _sass_app_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../sass/app.scss */ "./resources/sass/app.scss");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
- // Подключение Bootstrap JS
- // Корректный импорт SCSS
+
 
 var cards = document.querySelectorAll('.card');
 var currentIndex = 0;
@@ -9590,6 +9589,16 @@ function openModal(element) {
       placement: 'right'
     });
   }
+}
+function createPaint(event) {
+  // Прекращаем стандартное поведение ссылки
+  event.preventDefault();
+
+  // Получаем объект модального окна Bootstrap
+  var myModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(document.getElementById('createPaintModal'));
+
+  // Показываем модальное окно
+  myModal.show();
 }
 function updateModalContent(index) {
   var card = cards[index];
@@ -9625,6 +9634,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var loadButton = document.querySelector('input[type="button"]');
   loadButton.addEventListener('click', showLoadingToast);
 });
+document.getElementById('createPaintBtn').addEventListener('click', createPaint);
 
 /***/ }),
 

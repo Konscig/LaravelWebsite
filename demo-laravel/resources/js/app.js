@@ -1,6 +1,6 @@
 require('./bootstrap');
-import { Modal, Popover, Toast } from 'bootstrap'; // Подключение Bootstrap JS
-import '../sass/app.scss'; // Корректный импорт SCSS
+import { Modal, Popover, Toast } from 'bootstrap';
+import '../sass/app.scss';
 
 
 const cards = document.querySelectorAll('.card');
@@ -34,6 +34,16 @@ function openModal(element) {
     }
 }
 
+function createPaint(event) {
+    // Прекращаем стандартное поведение ссылки
+    event.preventDefault();
+
+    // Получаем объект модального окна Bootstrap
+    const myModal = new Modal(document.getElementById('createPaintModal'));
+
+    // Показываем модальное окно
+    myModal.show();
+}
 function updateModalContent(index) {
     const card = cards[index];
     const title = card.querySelector('.card-title').textContent;
@@ -73,3 +83,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadButton = document.querySelector('input[type="button"]');
     loadButton.addEventListener('click', showLoadingToast);
 });
+
+document.getElementById('createPaintBtn').addEventListener('click', createPaint);
