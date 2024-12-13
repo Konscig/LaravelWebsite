@@ -18,7 +18,7 @@
         </div>
 
         <form class="loadbtn">
-          <input type="button" value="Загрузить">
+            <a href="{{ route('paints.index') }}" class="btn btn-primary">Загрузить</a>
           <div class="toast-container position-fixed top-0 end-0 p-3">
               <div id="loadingToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                   <div class="toast-header">
@@ -35,70 +35,28 @@
       </nav>
 
 
-      <div class="container text-center">
+    <div class="container text-center">
         <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 d-flex align-items-stretch gy-3 my-3">
-          <div class="col">
-            <div class="card h-100">
-              <img src="{{ asset('images/lady_with_pet.jpg') }}" class="card-img-top gallery-item" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Дама с питомцем</h5>
-                <p class="card-text">Красивое изображение, изображающая даму с ее питомцем в спокойной обстановке.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-primary" onclick="openModal(this)">Просмотреть детали</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{{ asset('images/madonna_lita.jpg') }}" class="card-img-top gallery-item" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Мадонна Лита</h5>
-                <p class="card-text">Знаменитая картина Леонардо да Винчи, изображающая Мадонну с ребёнком.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-primary" onclick="openModal(this)">Просмотреть детали</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{{ asset('images/resting_wife.jpg') }}" class="card-img-top gallery-item" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Отдыхающая жена</h5>
-                <p class="card-text">Мирное изображение женщины, отдыхающей у себя дома.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-primary" onclick="openModal(this)">Просмотреть детали</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{{ asset('images/spring.jpg') }}" class="card-img-top gallery-item" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Весна</h5>
-                <p class="card-text">Выражение радости и обновления во время весеннего сезона.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-primary" onclick="openModal(this)">Просмотреть детали</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <img src="{{ asset('images/woman_with_umbrella.jpg') }}" class="card-img-top gallery-item" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Женщина с зонтом</h5>
-                <p class="card-text">Женщина, грациозно стоящая под зонтом под дождем.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-primary" onclick="openModal(this)">Просмотреть детали</a>
-              </div>
-            </div>
-          </div>
+            @foreach($paints as $paint)
+                <div class="col">
+                    <div class="card h-100">
+                        <!-- Путь к изображению -->
+                        <img src="{{ asset('storage/' . $paint->image_path) }}" class="card-img-top gallery-item" alt="{{ $paint->paint_name }}">
+                        <div class="card-body">
+                            <!-- Название картины -->
+                            <h5 class="card-title">{{ $paint->paint_name }}</h5>
+                            <!-- Описание картины -->
+                            <p class="card-text">{{ Str::limit($paint->description, 100) }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary" onclick="openModal(this, '{{ $paint->paint_name }}', '{{ asset('storage/' . $paint->image_path) }}', '{{ $paint->details }}')">Просмотреть детали</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-      </div>
+    </div>
+
 
 
     <!-- Модальное окно -->

@@ -9570,24 +9570,81 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
-var cards = document.querySelectorAll('.card');
-var currentIndex = 0;
-var descriptions = ["Картина, как считается, принадлежащая кисти Леонардо да Винчи. По мнению многих исследователей, это портрет Чечилии Галлерани — любовницы Лодовико Сфорца по прозванию Иль Моро, герцога Миланского, что находит подтверждение в сложной символике картины. Наряду с «Моной Лизой», «Портретом Джиневры де Бенчи» и «Прекрасной Ферроньерой» полотно принадлежит к числу четырёх женских портретов кисти Леонардо.", "Картина из собрания Государственного Эрмитажа в Санкт-Петербурге (инв. ГЭ-249), традиционно атрибутируемая как произведение итальянского художника и учёного эпохи Высокого Возрождения Леонардо да Винчи. Датируется периодом 1481—1495 годов. Название картины происходит от имени её последних владельцев — представителей миланского семейства графов Литта, у которых она была приобретена в российскую императорскую коллекцию в 1865 году. Техника выполнения произведения — живопись темперой на деревянной доске, в XIX веке переведённая на холст, размер полотна — 42 × 33 см[1].", "Илья Репин Отдых (1882) Вера Шевцова, которая в 18 лет вышла замуж за Илью Репина, была, по его же критериям, идеальной спутницей для художника: жила его интересами, увлекалась живописью, терпеливо позировала для портретов, занималась домашним хозяйством и воспитанием детей – именно с такой женщиной он мечтал оставаться до конца своих дней.", "Картина висела над софой, называемой летуччо. В той же комнате находились ещё две картины: «Паллада и кентавр» (1482—1483) Боттичелли и «Мадонна с Младенцем» неизвестного автора. Учитывая то обстоятельство, что 19 июля 1482 года дядя женил по политическим соображениям 17-летнего Лоренцо ди Пьерфранческо на Семирамиде, представительнице знатной фамилии Аппиани, исследователи полагают, что картина была заказана Лоренцо Великолепным Боттичелли в качестве свадебного подарка племяннику. Такие подарки были в то время обычным явлением[2].", "На картине изображена супруга художника Камилла с их сыном Жаном в один из ветреных летних дней периода 1871—1877 годов, когда семейство Моне проживало в Аржантёе. Мадам Моне в развевающемся на ветру белом платье и шляпе с вуалью изображена с нижнего ракурса в перспективе восходящей прямой линии на фоне облаков в лазурном небе."];
+var cards = document.querySelectorAll('.card'); // Список всех карточек
+var currentIndex = 0; // Индекс текущей карточки
+
 function openModal(element) {
+  // Найти карточку, к которой относится кнопка
   var card = element.closest('.card');
-  currentIndex = Array.from(cards).indexOf(card);
-  updateModalContent(currentIndex);
+  if (card) {
+    // Получить заголовок, изображение и описание из карточки
+    var title = card.querySelector('.card-title').textContent;
+    var imageSrc = card.querySelector('.card-img-top').src;
+    var description = card.querySelector('.card-text').textContent;
+    var cardId = card.getAttribute('data-id'); // Предполагаем, что ID карточки хранится в data-id
+
+    // Получить details с сервера
+    fetch("/card/".concat(cardId, "/details")).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      if (data.details) {
+        // Обновить содержимое модального окна
+        document.getElementById('imageModalLabel').textContent = title;
+        document.getElementById('modalImage').src = imageSrc;
+        document.getElementById('imageDescription').textContent = description;
+        document.getElementById('imageDetails').textContent = data.details; // Устанавливаем details
+      } else {
+        console.error('Details not found');
+      }
+    })["catch"](function (error) {
+      return console.error('Error fetching details:', error);
+    });
+  }
+
+  // Показать модальное окно
   var modalElement = document.getElementById('imageModal');
   if (modalElement) {
     var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalElement);
     modal.show();
-    document.addEventListener('keydown', handleKeydown);
+  }
+}
+function updateModalContent(index) {
+  var card = cards[index];
+  var title = card.querySelector('.card-title').textContent;
+  var description = card.querySelector('.card-text').textContent;
+  var details = card.querySelector('.card-description').textContent; // Если описание хранится в отдельном элементе
+  var imageUrl = card.querySelector('.card-img-top').getAttribute('src'); // Ссылка на изображение
+
+  // Обновляем модальное окно
+  document.getElementById('imageModalLabel').textContent = title;
+  document.getElementById('modalImage').src = imageUrl;
+  document.getElementById('imageDescription').textContent = description;
+  document.getElementById('imageDetails').textContent = details;
+
+  // Показать модальное окно
+  var modalElement = document.getElementById('imageModal');
+  if (modalElement) {
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalElement);
+    modal.show();
+
+    // Добавить обработчик для закрытия модального окна на Escape
+    var _handleKeydown2 = function _handleKeydown(event) {
+      if (event.key === 'Escape') {
+        modal.hide();
+        document.removeEventListener('keydown', _handleKeydown2);
+      }
+    };
+    document.addEventListener('keydown', _handleKeydown2);
+
+    // Добавить popover к описанию
     var modalDescription = document.getElementById('imageDescription');
-    var popover = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Popover(modalDescription, {
-      trigger: 'hover',
-      content: "Это описание картинки",
-      placement: 'right'
-    });
+    if (modalDescription) {
+      var popover = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Popover(modalDescription, {
+        trigger: 'hover',
+        content: "Это описание картинки",
+        placement: 'right'
+      });
+    }
   }
 }
 function createPaint(event) {
@@ -9600,14 +9657,15 @@ function createPaint(event) {
   // Показываем модальное окно
   myModal.show();
 }
-function updateModalContent(index) {
-  var card = cards[index];
-  var title = card.querySelector('.card-title').textContent;
-  var description = descriptions[index];
-  var imageUrl = card.querySelector('.card-img-top').getAttribute('src');
-  document.getElementById('imageModalLabel').textContent = title;
-  document.getElementById('modalImage').src = imageUrl;
-  document.getElementById('imageDescription').textContent = description;
+function viewPaint(event, paintId) {
+  // Прекращаем стандартное поведение ссылки
+  event.preventDefault();
+
+  // Получаем объект модального окна Bootstrap по ID
+  var myModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(document.getElementById('viewPaintModal-' + paintId));
+
+  // Показываем модальное окно
+  myModal.show();
 }
 function handleKeydown(event) {
   var totalCards = cards.length;
@@ -9635,32 +9693,68 @@ document.addEventListener('DOMContentLoaded', function () {
   loadButton.addEventListener('click', showLoadingToast);
 });
 document.getElementById('createPaintBtn').addEventListener('click', createPaint);
-function extractPaint(element) {
-  var card = element.closest('.card');
-  var currentIndex = Array.from(cards).indexOf(card);
-  var paint = paints[currentIndex]; // Допустим, что данные хранятся в массиве paints
+document.querySelectorAll('.edit-btn').forEach(function (button) {
+  button.addEventListener('click', function (event) {
+    var targetModalId = button.getAttribute('data-bs-target').substring(1); // Убираем префикс #
+    viewPaint(event, targetModalId);
+  });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  // Валидация формы для создания картины
+  var createForm = document.querySelector('#createPaintModal form');
+  var createInputs = createForm.querySelectorAll('input, textarea');
+  var createSubmitButton = createForm.querySelector('button[type="submit"]');
+  setupValidation(createForm, createInputs, createSubmitButton);
 
-  var modalElement = document.getElementById('imageModal');
-  if (modalElement) {
-    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalElement);
-    modal.show();
-    document.addEventListener('keydown', handleKeydown);
+  // Валидация форм для редактирования картин
+  var editForms = document.querySelectorAll('[id^="editPaintModal-"] form');
+  editForms.forEach(function (editForm) {
+    var editInputs = editForm.querySelectorAll('input, textarea');
+    var editSubmitButton = editForm.querySelector('button[type="submit"]');
+    setupValidation(editForm, editInputs, editSubmitButton);
+  });
+});
 
-    // Отображаем данные в модальном окне
-    var modalTitle = document.getElementById('imageTitle');
-    modalTitle.textContent = paint.title;
-    var modalDescription = document.getElementById('imageDescription');
-    modalDescription.textContent = paint.description;
-    var modalImage = document.getElementById('image');
-    modalImage.src = paint.image_url;
-
-    // Удалите эту строку, если вы не используете Popover
-    var popover = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Popover(modalDescription, {
-      trigger: 'hover',
-      content: "Это описание картинки",
-      placement: 'right'
+/**
+ * Устанавливает валидацию для формы
+ * @param {HTMLFormElement} form - Форма для проверки
+ * @param {NodeList} inputs - Поля формы
+ * @param {HTMLButtonElement} submitButton - Кнопка отправки
+ */
+function setupValidation(form, inputs, submitButton) {
+  form.addEventListener('submit', function (event) {
+    var isValid = true;
+    inputs.forEach(function (input) {
+      if (!input.checkValidity()) {
+        input.classList.add('is-invalid');
+        isValid = false;
+      } else {
+        input.classList.remove('is-invalid');
+      }
     });
-  }
+    if (!isValid) {
+      event.preventDefault(); // Остановить отправку формы
+      event.stopPropagation();
+    }
+  });
+  inputs.forEach(function (input) {
+    input.addEventListener('input', function () {
+      if (input.checkValidity()) {
+        input.classList.remove('is-invalid');
+      }
+    });
+  });
+
+  // Деактивация кнопки отправки, пока форма не валидна
+  form.addEventListener('input', function () {
+    var allValid = true;
+    inputs.forEach(function (input) {
+      if (!input.checkValidity()) {
+        allValid = false;
+      }
+    });
+    submitButton.disabled = !allValid;
+  });
 }
 
 /***/ }),

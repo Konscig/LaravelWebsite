@@ -97,3 +97,10 @@ footer {
 .loadbtn {
     padding-right: 5px;
 }
+
+td.buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

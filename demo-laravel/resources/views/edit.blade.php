@@ -1,5 +1,5 @@
 <img src="{{ asset('storage/' . $paint->image_path) }}" alt="Paint Image">
-<form action="{{ route('paints.update') }}" method="GET" enctype="multipart/form-data">
+<form action="{{ route('paints.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <input type="text" name="paint_name" placeholder="Paint Name">
     <textarea name="description" placeholder="Description"></textarea>

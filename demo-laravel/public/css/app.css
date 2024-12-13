@@ -10550,3 +10550,10 @@ footer .icons a, footer .icons .icon {
 .loadbtn {
   padding-right: 5px;
 }
+
+td.buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
