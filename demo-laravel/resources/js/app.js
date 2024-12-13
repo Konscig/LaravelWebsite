@@ -80,8 +80,39 @@ function showLoadingToast() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loadButton = document.querySelector('input[type="button"]');
+    const loadButton = document.querySelector('#createPaintButton');
     loadButton.addEventListener('click', showLoadingToast);
 });
 
 document.getElementById('createPaintBtn').addEventListener('click', createPaint);
+
+function extractPaint(element) {
+    const card = element.closest('.card');
+    const currentIndex = Array.from(cards).indexOf(card);
+    const paint = paints[currentIndex]; // Допустим, что данные хранятся в массиве paints
+
+    const modalElement = document.getElementById('imageModal');
+    if (modalElement) {
+        const modal = new Modal(modalElement);
+        modal.show();
+
+        document.addEventListener('keydown', handleKeydown);
+
+        // Отображаем данные в модальном окне
+        const modalTitle = document.getElementById('imageTitle');
+        modalTitle.textContent = paint.title;
+
+        const modalDescription = document.getElementById('imageDescription');
+        modalDescription.textContent = paint.description;
+
+        const modalImage = document.getElementById('image');
+        modalImage.src = paint.image_url;
+
+        // Удалите эту строку, если вы не используете Popover
+        const popover = new Popover(modalDescription, {
+            trigger: 'hover',
+            content: "Это описание картинки",
+            placement: 'right'
+        });
+    }
+}

@@ -9631,10 +9631,37 @@ function showLoadingToast() {
   toast.show();
 }
 document.addEventListener('DOMContentLoaded', function () {
-  var loadButton = document.querySelector('input[type="button"]');
+  var loadButton = document.querySelector('#createPaintButton');
   loadButton.addEventListener('click', showLoadingToast);
 });
 document.getElementById('createPaintBtn').addEventListener('click', createPaint);
+function extractPaint(element) {
+  var card = element.closest('.card');
+  var currentIndex = Array.from(cards).indexOf(card);
+  var paint = paints[currentIndex]; // Допустим, что данные хранятся в массиве paints
+
+  var modalElement = document.getElementById('imageModal');
+  if (modalElement) {
+    var modal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalElement);
+    modal.show();
+    document.addEventListener('keydown', handleKeydown);
+
+    // Отображаем данные в модальном окне
+    var modalTitle = document.getElementById('imageTitle');
+    modalTitle.textContent = paint.title;
+    var modalDescription = document.getElementById('imageDescription');
+    modalDescription.textContent = paint.description;
+    var modalImage = document.getElementById('image');
+    modalImage.src = paint.image_url;
+
+    // Удалите эту строку, если вы не используете Popover
+    var popover = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Popover(modalDescription, {
+      trigger: 'hover',
+      content: "Это описание картинки",
+      placement: 'right'
+    });
+  }
+}
 
 /***/ }),
 

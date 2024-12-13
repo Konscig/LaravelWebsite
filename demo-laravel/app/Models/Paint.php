@@ -19,15 +19,6 @@ class Paint extends Model
         'image_path'
     ];
 
-    // Мутатор для поля image_path (если необходимо изменить путь изображения перед сохранением)
-    public function setImagePathAttribute($value)
-    {
-        // Пример: если путь изображения не пустой, добавляем префикс к пути
-        if ($value) {
-            $this->attributes['image_path'] = 'resources/images/' . $value;
-        }
-    }
-
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
@@ -36,11 +27,5 @@ class Paint extends Model
     public function getUpdatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
-    }
-
-    // Геттер для поля image_path (если нужно обрабатывать путь при извлечении)
-    public function getImagePathAttribute($value)
-    {
-        return $value ? asset($value) : null;
     }
 }

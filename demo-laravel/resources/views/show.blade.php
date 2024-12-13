@@ -17,8 +17,7 @@
                 @if ($paint->image_path)
                     <div class="mt-3">
                         <strong>Изображение:</strong>
-                        <img src="{{ $paint->image_path }}" alt="{{ $paint->paint_name }}" class="img-fluid mt-2" style="max-width: 100%; height: auto;">
-
+                        <img src="{{ asset('storage/' . $paint->image_path) }}" alt="{{ $paint->paint_name }}">
                     </div>
                 @else
                     <p>Изображение не загружено.</p>

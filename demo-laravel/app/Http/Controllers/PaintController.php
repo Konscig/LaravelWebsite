@@ -40,16 +40,15 @@ class PaintController extends Controller
             // Сохраняем изображение
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imageName = $image->getClientOriginalName();
                 $imagePath = $image->store('images', 'public');
             }
 
-            // Создаем запись
             $paint = new Paint();
             $paint->paint_name = $request->paint_name;
             $paint->description = $request->description;
             $paint->details = $request->details;
-            $paint->image_path = 'storage/' . $imagePath;
+            $paint->image_path = $imageName;
             $paint->save();
 
             return redirect()->back()->with('success', 'Картина успешно добавлена!');
