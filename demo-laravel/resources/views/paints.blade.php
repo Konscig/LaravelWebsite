@@ -4,7 +4,7 @@
     <h1>Список объектов Paint</h1>
     <!-- Кнопка для открытия модального окна -->
     <a href="#" class="btn btn-primary" id="createPaintBtn">Добавить новую картину</a>
-
+    <a href="{{ route('trashed') }}">Показать удалённые картины</a>
     <!-- Модальное окно -->
     <div class="modal fade" id="createPaintModal" tabindex="-1" aria-labelledby="createPaintModalLabel" aria-hidden="true">
         <div class="modal-dialog">

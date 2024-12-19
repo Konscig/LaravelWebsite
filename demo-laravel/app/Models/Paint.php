@@ -33,4 +33,19 @@ class Paint extends Model
     {
         return \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
     }
+
+    public function setPaintNameAttribute($value)
+    {
+        $this->attributes['paint_name'] = trim(substr($value, 0, 255));
+    }
+
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = trim(substr($value, 0, 1000));
+    }
+
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = trim(substr($value, 0, 2000));
+    }
 }

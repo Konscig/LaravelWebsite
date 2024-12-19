@@ -25,7 +25,7 @@ class PaintController extends Controller
             'paint_name' => 'required|string|max:255',
             'description' => 'required|string|max:4098',
             'details' => 'required|string|max:4098',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'paint_name.required' => 'Название картины обязательно.',
             'description.required' => 'Описание картины обязательно.',
@@ -108,8 +108,8 @@ class PaintController extends Controller
     public function trashed()
     {
         // Получение мягко удалённых объектов
-        $paints = Paint::onlyTrashed()->get();
-        return view('paints.trashed', compact('paints'));
+        $trashedPaints = Paint::onlyTrashed()->get();
+        return view('trashed', compact('trashedPaints'));
     }
 
     public function restore($id)
@@ -125,6 +125,6 @@ class PaintController extends Controller
         $paint = Paint::withTrashed()->findOrFail($id);
         $paint->forceDelete(); // Полное удаление из базы данных
 
-        return redirect()->route('paints.index')->with('success', 'Картина удалена безвозвратно!');
+        return redirect()->route('trashed')->with('success', 'Картина удалена безвозвратно!');
     }
 }
